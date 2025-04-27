@@ -35,9 +35,4 @@ public class FuncionarioModel {
     private String telefone;
     private Boolean estaAtivo;
 
-   /* @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private Set<OrdemServicoModel> ordens = new HashSet<>();
-
-    */
 }

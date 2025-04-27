@@ -1,9 +1,10 @@
 package com.bytenest.sistema_inventario_fn.dtos;
 
-import com.bytenest.sistema_inventario_fn.enums.Cargos;
+import com.bytenest.sistema_inventario_fn.enums.Cargo;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-public record CriarUsuarioDto(
+public record UsuarioDto(
 
         @NotBlank
         String email,
@@ -11,7 +12,8 @@ public record CriarUsuarioDto(
         @NotBlank
         String senha,
 
-        Cargos cargo
+        @NotNull
+        Cargo cargo
 
 ) {
 }

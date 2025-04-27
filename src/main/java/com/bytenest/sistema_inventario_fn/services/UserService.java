@@ -1,6 +1,6 @@
 package com.bytenest.sistema_inventario_fn.services;
 
-import com.bytenest.sistema_inventario_fn.dtos.CriarUsuarioDto;
+import com.bytenest.sistema_inventario_fn.dtos.UsuarioDto;
 import com.bytenest.sistema_inventario_fn.model.UserModel;
 import com.bytenest.sistema_inventario_fn.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -23,11 +23,12 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<?> salvarUsuario(CriarUsuarioDto criarUsuarioDto){
+    public ResponseEntity<?> salvarUsuario(UsuarioDto usuarioDto){
         try {
-            UserModel usuarioModel = new UserModel();
+            UserModel user = new UserModel();
+            BeanUtils.copyProperties(usuarioDto, user);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(usuarioModel));
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(user));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao salvar usuário: " + e.getMessage());
@@ -46,7 +47,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<Object> atualizarUsuario(Long id, CriarUsuarioDto criarUsuarioDto){
+    public ResponseEntity<Object> atualizarUsuario(Long id, UsuarioDto usuarioDto){
         try {
             Optional<UserModel> usuario0 = usuarioRepository.findById(id);
 
@@ -54,7 +55,7 @@ public class UserService {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario não encontrado.");
             }
             var userModel = usuario0.get();
-            BeanUtils.copyProperties(criarUsuarioDto, userModel);
+            BeanUtils.copyProperties(usuarioDto, userModel);
             return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(userModel));
 
         } catch (Exception e){

@@ -1,6 +1,6 @@
 package com.bytenest.sistema_inventario_fn.controllers;
 
-import com.bytenest.sistema_inventario_fn.dtos.CriarUsuarioDto;
+import com.bytenest.sistema_inventario_fn.dtos.UsuarioDto;
 import com.bytenest.sistema_inventario_fn.model.UserModel;
 import com.bytenest.sistema_inventario_fn.repositories.UsuarioRepository;
 import com.bytenest.sistema_inventario_fn.services.UserService;
@@ -21,8 +21,8 @@ public class UsuarioController {
     UserService userService;
 
     @PostMapping("/usuarios")
-    public ResponseEntity<?> salvarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto) {
-        return userService.salvarUsuario(criarUsuarioDto);
+    public ResponseEntity<?> salvarUsuario(@RequestBody @Valid UsuarioDto usuarioDto) {
+        return userService.salvarUsuario(usuarioDto);
     }
 
     @GetMapping("/usuarios")
@@ -37,8 +37,8 @@ public class UsuarioController {
 
     @PutMapping("/usuarios/{id}")
     public ResponseEntity<Object> atualizarUsuario(@PathVariable (value = "id") Long id,
-                                                @RequestBody @Valid CriarUsuarioDto criarUsuarioDto) {
-        return userService.atualizarUsuario(id, criarUsuarioDto);
+                                                @RequestBody @Valid UsuarioDto usuarioDto) {
+        return userService.atualizarUsuario(id, usuarioDto);
     }
 
     @DeleteMapping("/usuarios/{id}")
