@@ -29,8 +29,6 @@ public class FuncionarioModel {
     @Column(unique = true)
     private String cpf;
 
-    private String cargo;
-
     @Column(unique = true, nullable = false)
     private String email;
 
