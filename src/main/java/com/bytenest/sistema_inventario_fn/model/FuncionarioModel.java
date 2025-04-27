@@ -1,5 +1,6 @@
 package com.bytenest.sistema_inventario_fn.model;
 
+import com.bytenest.sistema_inventario_fn.enums.StatusFuncionario;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,6 +34,6 @@ public class FuncionarioModel {
     private String email;
 
     private String telefone;
-    private Boolean estaAtivo;
+    private StatusFuncionario statusFuncionario;
 
 }
