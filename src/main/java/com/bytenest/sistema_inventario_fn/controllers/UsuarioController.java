@@ -18,31 +18,31 @@ public class UsuarioController {
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    UserService usuarioService;
+    UserService userService;
 
     @PostMapping("/usuarios")
     public ResponseEntity<?> salvarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto) {
-        return usuarioService.salvarUsuario(criarUsuarioDto);
+        return userService.salvarUsuario(criarUsuarioDto);
     }
 
     @GetMapping("/usuarios")
     public ResponseEntity<List<UserModel>> listarTodasOsUsuarios(){
-        return usuarioService.listarTodasOsUsuarios();
+        return userService.listarTodasOsUsuarios();
     }
 
     @GetMapping("/usuarios/{id}")
     public ResponseEntity<Object> listarUmUsuario(@PathVariable(value = "id") Long id){
-        return usuarioService.listarUsuario(id);
+        return userService.listarUsuario(id);
     }
 
     @PutMapping("/usuarios/{id}")
     public ResponseEntity<Object> atualizarUsuario(@PathVariable (value = "id") Long id,
                                                 @RequestBody @Valid CriarUsuarioDto criarUsuarioDto) {
-        return usuarioService.atualizarUsuario(id, criarUsuarioDto);
+        return userService.atualizarUsuario(id, criarUsuarioDto);
     }
 
     @DeleteMapping("/usuarios/{id}")
     public ResponseEntity<Object> deletarUsuario(@PathVariable (value = "id") Long id){
-        return usuarioService.deletarUsuario(id);
+        return userService.deletarUsuario(id);
     }
 }

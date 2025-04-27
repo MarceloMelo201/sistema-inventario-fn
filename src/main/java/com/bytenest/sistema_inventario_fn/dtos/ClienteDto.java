@@ -1,6 +1,6 @@
 package com.bytenest.sistema_inventario_fn.dtos;
 
-import com.bytenest.InvetarioApi.enums.EstadosUf;
+import com.bytenest.sistema_inventario_fn.enums.EstadosUf;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

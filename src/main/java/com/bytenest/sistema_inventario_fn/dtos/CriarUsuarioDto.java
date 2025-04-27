@@ -1,6 +1,6 @@
 package com.bytenest.sistema_inventario_fn.dtos;
 
-import com.bytenest.InvetarioApi.enums.Cargos;
+import com.bytenest.sistema_inventario_fn.enums.Cargos;
 import jakarta.validation.constraints.NotBlank;
 
 public record CriarUsuarioDto(
