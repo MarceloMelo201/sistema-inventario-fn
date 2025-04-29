@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Clientes</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/cliente.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="home.html">Início</a></li>
+            <li><a href="usuario.html">Usuários</a></li>
+            <li><a href="cliente.html" class="active">Clientes</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>Gestão de Clientes</h1>
+        </header>
+
+        <section>
+            <form id="clienteForm">
+                <input type="text" name="nomeCliente" placeholder="Nome" required>
+                <input type="email" name="emailCliente" placeholder="Email" required>
+                <input type="text" name="telefone" placeholder="Telefone">
+                <input type="text" name="cidade" placeholder="Cidade">
+                <input type="text" name="bairro" placeholder="Bairro">
+                <input type="text" name="rua" placeholder="Rua">
+                <select name="uf" required>
+                    <option value="">UF</option>
+                    <option value="SP">SP</option>
+                    <option value="RJ">RJ</option>
+                    <!-- Adicione os demais estados -->
+                </select>
+                <button type="submit">Salvar Cliente</button>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Cidade</th>
+                        <th>UF</th>
+                    </tr>
+                </thead>
+                <tbody id="clienteTableBody"></tbody>
+            </table>
+        </section>
+    </div>
+</div>
+<script src="/static/js/cliente.js"></script>
+</body>
+</html>
