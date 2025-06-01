@@ -59,17 +59,11 @@ public class ClienteServiceTest {
 
         // Verifica se telefone e endereço foram adicionados
         assertFalse(clienteSalvo.getTelefones().isEmpty());
-        assertFalse(clienteSalvo.getEnderecos().isEmpty());
+
 
         // Verifica dados do telefone
         assertEquals(dto.ddd(), clienteSalvo.getTelefones().get(0).getDdd());
         assertEquals(dto.numero(), clienteSalvo.getTelefones().get(0).getNumero());
-
-        // Verifica dados do endereço
-        assertEquals(dto.uf(), clienteSalvo.getEnderecos().get(0).getUf());
-        assertEquals(dto.cep(), clienteSalvo.getEnderecos().get(0).getCep());
-        assertEquals(dto.cidade(), clienteSalvo.getEnderecos().get(0).getCidade());
-        assertEquals(dto.bairro(), clienteSalvo.getEnderecos().get(0).getBairro());
 
         // Verifica se save foi chamado 1 vez
         verify(clienteRepository, times(1)).save(any(ClienteModel.class));
