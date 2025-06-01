@@ -1,76 +1,62 @@
 package com.bytenest.sistema_inventario_fn.services;
 
 import com.bytenest.sistema_inventario_fn.dtos.UsuarioDto;
-import com.bytenest.sistema_inventario_fn.model.UserModel;
+import com.bytenest.sistema_inventario_fn.model.entities.UserModel;
+import com.bytenest.sistema_inventario_fn.repositories.ClienteRepository;
 import com.bytenest.sistema_inventario_fn.repositories.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
     private final UsuarioRepository usuarioRepository;
+    private final ClienteRepository clienteRepository;
 
     @Autowired
-    public UserService(UsuarioRepository usuarioRepository) {
+    public UserService(UsuarioRepository usuarioRepository,
+                       ClienteRepository clienteRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     @Transactional
-    public ResponseEntity<?> salvarUsuario(UsuarioDto usuarioDto){
-        try {
+    public UserModel salvarUsuario(UsuarioDto usuarioDto){
             UserModel user = new UserModel();
             BeanUtils.copyProperties(usuarioDto, user);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioRepository.save(user));
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro ao salvar usuário: " + e.getMessage());
-        }
+            return usuarioRepository.save(user);
     }
 
-    public ResponseEntity<List<UserModel>> listarTodasOsUsuarios(){
+    public List<UserModel> listarTodosOsUsuarios(){
         List<UserModel> listUsuario = usuarioRepository.findAll();
-        return ResponseEntity.status(HttpStatus.OK).body(listUsuario);
+        return listUsuario;
     }
 
-    public ResponseEntity<Object> listarUsuario(Long id){
-        Optional<UserModel> usuario0 = usuarioRepository.findById(id);
-        return usuario0.<ResponseEntity<Object>> map(UsuarioModel -> ResponseEntity.status(HttpStatus.OK).body(usuario0))
-                .orElseGet(() ->ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado."));
-    }
-
-    @Transactional
-    public ResponseEntity<Object> atualizarUsuario(Long id, UsuarioDto usuarioDto){
-        try {
-            Optional<UserModel> usuario0 = usuarioRepository.findById(id);
-
-            if(!usuario0.isPresent()){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario não encontrado.");
-            }
-            var userModel = usuario0.get();
-            BeanUtils.copyProperties(usuarioDto, userModel);
-            return ResponseEntity.status(HttpStatus.OK).body(usuarioRepository.save(userModel));
-
-        } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erro ao atualizar usuário: " + e.getMessage());
-        }
+    public UserModel listarUsuario(Long id){
+        UserModel user = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(STR."Usuário não encontrado com o id: \{id}"));
+        return user;
     }
 
     @Transactional
-    public ResponseEntity<Object> deletarUsuario(Long id){
-        Optional<UserModel> usuario0 = usuarioRepository.findById(id);
-        if(usuario0.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
-        }
-        usuarioRepository.delete(usuario0.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Usuário deletado com sucesso!");
+    public UserModel atualizarUsuario(Long id, UsuarioDto usuarioDto){
+        UserModel user = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(STR."Usuário não encontrado com o id: \{id}"));
+
+            BeanUtils.copyProperties(usuarioDto, user);
+            return usuarioRepository.save(user);
+
+    }
+
+    @Transactional
+    public void deletarUsuario(Long id){
+        UserModel user = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(STR."Usuário não encontrado com o id: \{id}"));
+
+        usuarioRepository.delete(user);
+
     }
 }

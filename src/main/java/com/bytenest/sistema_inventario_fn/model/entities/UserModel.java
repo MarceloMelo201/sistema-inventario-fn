@@ -1,4 +1,4 @@
-package com.bytenest.sistema_inventario_fn.model;
+package com.bytenest.sistema_inventario_fn.model.entities;
 
 import com.bytenest.sistema_inventario_fn.enums.Cargo;
 import jakarta.persistence.*;

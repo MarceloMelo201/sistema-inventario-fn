@@ -1,7 +1,7 @@
 package com.bytenest.sistema_inventario_fn.repositories;
 
 
-import com.bytenest.sistema_inventario_fn.model.FuncionarioModel;
+import com.bytenest.sistema_inventario_fn.model.entities.FuncionarioModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

@@ -3,7 +3,6 @@ package com.bytenest.sistema_inventario_fn.dtos;
 import com.bytenest.sistema_inventario_fn.enums.StatusFuncionario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public record FuncionarioDto(
 
@@ -18,7 +17,10 @@ public record FuncionarioDto(
         String email,
 
         @NotBlank
-        String telefone,
+        String ddd,
+
+        @NotBlank
+        String numero,
 
         @NotBlank
         StatusFuncionario status

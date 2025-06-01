@@ -14,7 +14,13 @@ public record ClienteDto(
         String emailCliente,
 
         @NotBlank
-        String telefone,
+        String ddd,
+
+        @NotBlank
+        String numero,
+
+        @NotBlank
+        String cep,
 
         @NotBlank
         String cidade,
@@ -23,9 +29,6 @@ public record ClienteDto(
         String bairro,
 
         @NotBlank
-        String rua,
-
-        @NotNull
         EstadosUf uf
 ) {
 }
