@@ -2,6 +2,7 @@ package com.bytenest.sistema_inventario_fn.services;
 
 import com.bytenest.sistema_inventario_fn.dtos.PecaDto;
 import com.bytenest.sistema_inventario_fn.model.entities.PecaModel;
+import com.bytenest.sistema_inventario_fn.model.stock.MovimentacaoModel;
 import com.bytenest.sistema_inventario_fn.repositories.PecaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
@@ -20,9 +21,17 @@ public class PecaService {
     }
 
     @Transactional
-    public PecaModel salvarPeca(PecaDto pecaDto){
-            var pecaModel = new PecaModel();
-            BeanUtils.copyProperties(pecaDto, pecaModel);
+    public PecaModel salvarPeca(PecaDto pecaDto, MovimentacaoModel movimentacaoModel){
+
+            PecaModel pecaModel = PecaModel.builder()
+                    .nome(pecaDto.nome())
+                    .valor(pecaDto.valor())
+                    .sku(pecaDto.sku())
+                    .descricao(pecaDto.descricao())
+                    .quantidadeTotal(pecaDto.quantidadeTotal())
+                    .build();
+
+            pecaModel.addMovimentacao(movimentacaoModel);
             return pecaRepository.save(pecaModel);
     }
 

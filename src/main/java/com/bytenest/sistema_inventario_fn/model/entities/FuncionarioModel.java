@@ -43,6 +43,7 @@ public class FuncionarioModel {
     private String cidade;
     private String bairro;
 
+    @Enumerated(value = EnumType.STRING)
     private StatusFuncionario statusFuncionario;
 
     @Builder.Default

@@ -1,6 +1,7 @@
 package com.bytenest.sistema_inventario_fn.services;
 
 import com.bytenest.sistema_inventario_fn.dtos.FuncionarioDto;
+import com.bytenest.sistema_inventario_fn.model.component.Telefone;
 import com.bytenest.sistema_inventario_fn.model.entities.FuncionarioModel;
 import com.bytenest.sistema_inventario_fn.repositories.FuncionarioRepository;
 import jakarta.transaction.Transactional;
@@ -22,9 +23,23 @@ public class FuncionarioService {
 
     @Transactional
     public FuncionarioModel salvarFuncionario(FuncionarioDto funcionarioDto){
-            var funcionarioModel = new FuncionarioModel();
-            BeanUtils.copyProperties(funcionarioDto, funcionarioModel);
-            return funcionarioRepository.save(funcionarioModel);
+        var funcionarioModel = FuncionarioModel.builder()
+                .nome(funcionarioDto.nome())
+                .cpf(funcionarioDto.cpf())
+                .email(funcionarioDto.email())
+                .cep(funcionarioDto.cep())
+                .uf(funcionarioDto.uf())
+                .cidade(funcionarioDto.cidade())
+                .bairro(funcionarioDto.bairro())
+                .build();
+
+        Telefone telefone = Telefone.builder()
+                .ddd(funcionarioDto.ddd())
+                .numero(funcionarioDto.numero())
+                .build();
+
+        funcionarioModel.addTelefone(telefone);
+        return funcionarioRepository.save(funcionarioModel);
     }
 
     public List<FuncionarioModel> listarTodosOsFuncionarios(){
@@ -43,8 +58,25 @@ public class FuncionarioService {
         FuncionarioModel funcionario = funcionarioRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado."));
 
-            BeanUtils.copyProperties(funcionarioDto, funcionario);
-            return funcionarioRepository.save(funcionario);
+        funcionario.setNome(funcionarioDto.nome());
+        funcionario.setCpf(funcionarioDto.cpf());
+        funcionario.setEmail(funcionarioDto.email());
+        funcionario.setStatusFuncionario(funcionarioDto.status());
+        funcionario.setCep(funcionarioDto.cep());
+        funcionario.setUf(funcionarioDto.uf());
+        funcionario.setCidade(funcionarioDto.cidade());
+        funcionario.setBairro(funcionarioDto.bairro());
+
+        funcionario.getTelefones().clear();
+        Telefone telefone = Telefone.builder()
+                .ddd(funcionarioDto.ddd())
+                .numero(funcionarioDto.numero())
+                .build();
+
+        telefone.setFuncionario(funcionario);
+        funcionario.setTelefones(List.of(telefone));
+
+        return funcionarioRepository.save(funcionario);
     }
 
     @Transactional
