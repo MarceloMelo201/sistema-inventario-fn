@@ -38,7 +38,6 @@ public class ClienteService {
                 .build();
 
         Telefone telefone = Telefone.builder()
-                .ddd(clienteDto.ddd())
                 .numero(clienteDto.numero())
                 .build();
 
@@ -72,7 +71,6 @@ public class ClienteService {
 
         cliente.getTelefones().clear();
         Telefone telefone = Telefone.builder()
-                .ddd(clienteDto.ddd())
                 .numero(clienteDto.numero())
                 .build();
 

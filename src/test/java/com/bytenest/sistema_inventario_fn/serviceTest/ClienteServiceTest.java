@@ -1,71 +1,107 @@
 package com.bytenest.sistema_inventario_fn.serviceTest;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.UUID;
-
 import com.bytenest.sistema_inventario_fn.dtos.ClienteDto;
-import com.bytenest.sistema_inventario_fn.enums.EstadosUf;
+import com.bytenest.sistema_inventario_fn.model.component.Telefone;
 import com.bytenest.sistema_inventario_fn.model.entities.ClienteModel;
 import com.bytenest.sistema_inventario_fn.repositories.ClienteRepository;
+
 import com.bytenest.sistema_inventario_fn.services.ClienteService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.MockitoAnnotations;
 
-import org.junit.jupiter.api.extension.ExtendWith;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-@ExtendWith(MockitoExtension.class)
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 public class ClienteServiceTest {
+
     @Mock
     private ClienteRepository clienteRepository;
 
     @InjectMocks
     private ClienteService clienteService;
 
+    private UUID clienteId;
+    private ClienteModel clienteExistente;
+
+    @BeforeEach
+    void setup() {
+        MockitoAnnotations.openMocks(this);
+
+        clienteId = UUID.randomUUID();
+
+        clienteExistente = ClienteModel.builder()
+                .idCliente(clienteId)
+                .nomeCliente("Antigo Nome")
+                .emailCliente("antigo@email.com")
+                .cep("00000-000")
+                .cidade("Cidade Antiga")
+                .bairro("Bairro Antigo")
+                .uf(null)
+                .telefones(new ArrayList<>(List.of(
+                        Telefone.builder().numero("111111111").build()
+                )))
+                .build();
+
+    }
+
     @Test
-    void deveSalvarClienteComTelefoneEEndereco() {
-        // Mock DTO com dados de teste
-        ClienteDto dto = new ClienteDto(
-                "fulano@teste.com",
-                "Fulano",
-                "11",
+    void atualizarCliente_sucesso() {
+        // Mock findById para retornar cliente existente
+        when(clienteRepository.findById(clienteId)).thenReturn(Optional.of(clienteExistente));
+
+        ClienteDto dtoAtualizado = new ClienteDto(
+                "Novo Nome",
+                "novo@email.com",
                 "999999999",
                 "12345-678",
-                "São Paulo",
-                "Glicério",
-                 EstadosUf.SP
-
+                "Nova Cidade",
+                "Novo Bairro",
+                clienteExistente.getUf()
         );
 
-        // Mock comportamento do save (simulando que o JPA gerou um id)
-        when(clienteRepository.save(any(ClienteModel.class))).thenAnswer(invocation -> {
-            ClienteModel cliente = invocation.getArgument(0);
-            cliente.setIdCliente(UUID.randomUUID());
-            return cliente;
+        // Mock save para retornar o cliente que recebeu as atualizações
+        when(clienteRepository.save(any(ClienteModel.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        ClienteModel resultado = clienteService.atualizarCliente(clienteId, dtoAtualizado);
+
+        assertEquals("Novo Nome", resultado.getNomeCliente());
+        assertEquals("novo@email.com", resultado.getEmailCliente());
+        assertEquals("12345-678", resultado.getCep());
+        assertEquals("Nova Cidade", resultado.getCidade());
+        assertEquals("Novo Bairro", resultado.getBairro());
+        assertEquals("999999999", resultado.getTelefones().get(0).getNumero());
+
+        verify(clienteRepository).save(resultado);
+    }
+
+    @Test
+    void atualizarCliente_clienteNaoEncontrado_deveLancarExcecao() {
+        when(clienteRepository.findById(clienteId)).thenReturn(Optional.empty());
+
+        ClienteDto dto = new ClienteDto(
+                "Nome Qualquer",
+                "email@exemplo.com",
+                "999999999",
+                "12345-678",
+                "Cidade",
+                "Bairro",
+                null
+        );
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            clienteService.atualizarCliente(clienteId, dto);
         });
 
-        // Chama o método que queremos testar
-        ClienteModel clienteSalvo = clienteService.salvarCliente(dto);
+        assertEquals("Cliente não encontrado.", exception.getMessage());
 
-        // Verificações básicas
-        assertNotNull(clienteSalvo);
-        assertNotNull(clienteSalvo.getIdCliente());
-
-        assertEquals(dto.emailCliente(), clienteSalvo.getEmailCliente());
-        assertEquals(dto.nomeCliente(), clienteSalvo.getNomeCliente());
-
-        // Verifica se telefone e endereço foram adicionados
-        assertFalse(clienteSalvo.getTelefones().isEmpty());
-
-
-        // Verifica dados do telefone
-        assertEquals(dto.ddd(), clienteSalvo.getTelefones().get(0).getDdd());
-        assertEquals(dto.numero(), clienteSalvo.getTelefones().get(0).getNumero());
-
-        // Verifica se save foi chamado 1 vez
-        verify(clienteRepository, times(1)).save(any(ClienteModel.class));
+        verify(clienteRepository, never()).save(any());
     }
 }

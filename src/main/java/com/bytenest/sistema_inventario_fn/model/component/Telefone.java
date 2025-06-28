@@ -21,7 +21,6 @@ public class Telefone {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String ddd;
     private String numero;
 
     @ManyToOne

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/clientes")
 public class ClienteController {
 
     @Autowired
@@ -22,7 +23,7 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
-    @PostMapping("/clientes")
+    @PostMapping
     public ResponseEntity<?> salvarCliente(@RequestBody @Valid ClienteDto clienteDto) {
         try {
             ClienteModel cliente = clienteService.salvarCliente(clienteDto);
@@ -33,13 +34,13 @@ public class ClienteController {
         }
     }
 
-    @GetMapping("/clientes")
+    @GetMapping
     public ResponseEntity<List<ClienteModel>> listarTodasOsClientes(){
         List<ClienteModel> listCliente = clienteService.listarTodosOsClientes();
         return ResponseEntity.status(HttpStatus.OK).body(listCliente);
     }
 
-    @GetMapping("/clientes/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Object> listarCliente(@PathVariable(value = "id") UUID id){
         try{
             ClienteModel cliente = clienteService.listarCliente(id);
@@ -50,7 +51,7 @@ public class ClienteController {
         }
     }
 
-    @PutMapping("/clientes/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Object> atualizarCliente(@PathVariable (value = "id") UUID id,
                                                        @RequestBody @Valid ClienteDto clienteDto) {
         try{
@@ -62,7 +63,7 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/clientes/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletarCliente(@PathVariable (value = "id") UUID id){
         try{
             clienteService.deletarCliente(id);

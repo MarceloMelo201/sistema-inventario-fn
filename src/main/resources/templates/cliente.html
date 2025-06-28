@@ -2,59 +2,93 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Clientes</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/home.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/cliente.css">
+    <title>Gerenciar Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input, select, button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        .form-container {
+            max-width: 400px;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #aaa;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        .actions button {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-<div class="wrapper">
-    <div class="sidebar">
-        <h2>Dashboard</h2>
-        <ul>
-            <li><a href="home.html">Início</a></li>
-            <li><a href="usuario.html">Usuários</a></li>
-            <li><a href="cliente.html" class="active">Clientes</a></li>
-            <li><a href="funcionario.html">Funcionários</a></li>
-        </ul>
-    </div>
+<h2>Cadastro de Cliente</h2>
 
-    <div class="main-content">
-        <header>
-            <h1>Gestão de Clientes</h1>
-        </header>
+<div class="form-container">
+    <input type="hidden" id="clienteId">
+    <label>Nome:</label>
+    <input type="text" id="nomeCliente" required>
 
-        <section>
-            <form id="clienteForm">
-                <input type="text" name="nomeCliente" placeholder="Nome" required>
-                <input type="email" name="emailCliente" placeholder="Email" required>
-                <input type="text" name="telefone" placeholder="Telefone">
-                <input type="text" name="cidade" placeholder="Cidade">
-                <input type="text" name="bairro" placeholder="Bairro">
-                <input type="text" name="rua" placeholder="Rua">
-                <select name="uf" required>
-                    <option value="">UF</option>
-                    <option value="SP">SP</option>
-                    <option value="RJ">RJ</option>
-                    <!-- Adicione os demais estados -->
-                </select>
-                <button type="submit">Salvar Cliente</button>
-            </form>
+    <label>Email:</label>
+    <input type="email" id="emailCliente" required>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Telefone</th>
-                        <th>Cidade</th>
-                        <th>UF</th>
-                    </tr>
-                </thead>
-                <tbody id="clienteTableBody"></tbody>
-            </table>
-        </section>
-    </div>
+    <label>Número de telefone:</label>
+    <input type="text" id="numero" required>
+
+    <label>CEP:</label>
+    <input type="text" id="cep">
+
+    <label>Cidade:</label>
+    <input type="text" id="cidade" required>
+
+    <label>Bairro:</label>
+    <input type="text" id="bairro" required>
+
+    <label>Estado (UF):</label>
+    <select id="uf">
+        <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+        <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+        <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+        <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+        <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+        <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+        <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+        <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+        <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+    </select>
+
+    <button onclick="salvarCliente()">Salvar</button>
 </div>
+
+<h2>Clientes Cadastrados</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Telefone</th>
+        <th>UF</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody id="clientesTabela"></tbody>
+</table>
+
+<!-- Aqui o JS é carregado -->
 <script src="/static/js/cliente.js"></script>
+
 </body>
 </html>

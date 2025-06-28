@@ -18,9 +18,6 @@ public record FuncionarioDto(
         String email,
 
         @NotBlank
-        String ddd,
-
-        @NotBlank
         String numero,
 
         @NotBlank
@@ -35,7 +32,6 @@ public record FuncionarioDto(
         @NotBlank
         String bairro,
 
-        @NotBlank
         EstadosUf uf
 
 ) {

@@ -34,7 +34,6 @@ public class FuncionarioService {
                 .build();
 
         Telefone telefone = Telefone.builder()
-                .ddd(funcionarioDto.ddd())
                 .numero(funcionarioDto.numero())
                 .build();
 
@@ -69,7 +68,6 @@ public class FuncionarioService {
 
         funcionario.getTelefones().clear();
         Telefone telefone = Telefone.builder()
-                .ddd(funcionarioDto.ddd())
                 .numero(funcionarioDto.numero())
                 .build();
 
